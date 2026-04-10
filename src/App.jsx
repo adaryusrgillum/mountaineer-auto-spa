@@ -1,11 +1,12 @@
 import React, { useState, useEffect } from 'react';
-import { Droplets, Sparkles, MapPin, Clock, Phone, ChevronRight, Shield, Zap } from 'lucide-react';
+import { Droplets, Sparkles, MapPin, Clock, Phone, ChevronRight, Shield, Menu, X } from 'lucide-react';
 import heroImg from './assets/hero.png';
 import logoImg from './assets/logo.png';
 import serviceImg from './assets/service.png';
 
 function App() {
   const [scrolled, setScrolled] = useState(false);
+  const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
 
   useEffect(() => {
     const handleScroll = () => {
@@ -15,23 +16,46 @@ function App() {
     return () => window.removeEventListener('scroll', handleScroll);
   }, []);
 
+  const scrollToSection = (id) => {
+    setMobileMenuOpen(false);
+    const element = document.getElementById(id);
+    if (element) {
+      element.scrollIntoView({ behavior: 'smooth' });
+    }
+  };
+
   return (
     <>
       {/* Navigation */}
       <nav className={`nav-header ${scrolled ? 'scrolled' : ''}`}>
         <div className="container nav-content">
-          <div className="logo-container">
+          <div className="logo-container" onClick={() => scrollToSection('home')} style={{cursor: 'pointer'}}>
             <img src={logoImg} alt="Mountaineer Auto Spa Logo" className="logo-img" />
             <span className="logo-text">MOUNTAINEER <span className="text-gradient">AUTO SPA</span></span>
           </div>
-          <ul className="nav-links">
-            <li><a href="#home">Home</a></li>
-            <li><a href="#services">Services</a></li>
-            <li><a href="#location">Location</a></li>
+          
+          <ul className="nav-links desktop-links">
+            <li><button className="nav-btn" onClick={() => scrollToSection('home')}>Home</button></li>
+            <li><button className="nav-btn" onClick={() => scrollToSection('services')}>Services</button></li>
+            <li><button className="nav-btn" onClick={() => scrollToSection('location')}>Location</button></li>
             <li><button className="btn-primary" style={{padding: '0.5rem 1.5rem', fontSize: '0.9rem'}}>Book Now</button></li>
           </ul>
+
+          <button className="menu-btn" onClick={() => setMobileMenuOpen(!mobileMenuOpen)}>
+            {mobileMenuOpen ? <X size={28} /> : <Menu size={28} />}
+          </button>
         </div>
       </nav>
+
+      {/* Mobile Menu */}
+      <div className={`mobile-menu ${mobileMenuOpen ? 'open' : ''}`}>
+        <ul>
+          <li><button onClick={() => scrollToSection('home')}>Home</button></li>
+          <li><button onClick={() => scrollToSection('services')}>Services</button></li>
+          <li><button onClick={() => scrollToSection('location')}>Location</button></li>
+          <li><button className="btn-primary" style={{marginTop: '1rem'}}>Book Now</button></li>
+        </ul>
+      </div>
 
       {/* Hero Section */}
       <section id="home" className="hero">
@@ -45,7 +69,7 @@ function App() {
             <h1>Experience the <span className="text-gradient">Ultimate Glow.</span></h1>
             <p>State-of-the-art tunnel technology meets meticulous hand-finishing. We treat your vehicle to a premium spa experience right here in Morgantown, WV.</p>
             <div className="hero-btns">
-              <button className="btn-primary">View Wash Packages <ChevronRight size={18} style={{display:'inline', verticalAlign:'middle', marginLeft:'5px'}}/></button>
+              <button className="btn-primary" onClick={() => scrollToSection('services')}>View Wash Packages <ChevronRight size={18} style={{display:'inline', verticalAlign:'middle', marginLeft:'5px'}}/></button>
               <button className="btn-secondary">Join Unlimited Club</button>
             </div>
           </div>
@@ -64,6 +88,7 @@ function App() {
               <h3>Express Wash</h3>
               <p>A quick, brilliant clean featuring soft-cloth technology, spot-free rinse, and high-velocity air dry. In and out in 3 minutes.</p>
               <div className="service-price">$12 <span>/ wash</span></div>
+              <button className="btn-secondary" style={{marginTop: '1.5rem', width: '100%'}}>Select Package</button>
             </div>
             
             <div className="service-card glass-panel animate-fade-in animate-delay-2" style={{transform: 'translateY(-10px)', borderColor: 'var(--accent-blue)', boxShadow: '0 0 20px rgba(0, 210, 255, 0.1)'}}>
@@ -71,6 +96,7 @@ function App() {
               <h3>Mountaineer Ceramic</h3>
               <p>Our most popular package. Includes triple foam polish, clear coat protectant, tire shine, and a ceramic seal for lasting gloss.</p>
               <div className="service-price">$25 <span>/ wash</span></div>
+              <button className="btn-primary" style={{marginTop: '1.5rem', width: '100%'}}>Most Popular</button>
             </div>
 
             <div className="service-card glass-panel animate-fade-in animate-delay-3">
@@ -78,6 +104,7 @@ function App() {
               <h3>Ultimate Detail</h3>
               <p>The full inside-out treatment. Hands-on interior vacuum, dash conditioning, glass cleaning, and premium exterior wax.</p>
               <div className="service-price">$55 <span>/ wash</span></div>
+              <button className="btn-secondary" style={{marginTop: '1.5rem', width: '100%'}}>Select Package</button>
             </div>
           </div>
 
@@ -132,7 +159,7 @@ function App() {
         <div className="container">
           <div className="footer-content">
             <div className="footer-brand">
-              <div className="logo-container">
+              <div className="logo-container" onClick={() => scrollToSection('home')} style={{cursor: 'pointer'}}>
                 <img src={logoImg} alt="Mountaineer Auto Spa Logo" className="logo-img" style={{height: '40px'}}/>
                 <span className="logo-text" style={{fontSize: '1.2rem'}}>MOUNTAINEER <span className="text-gradient">AUTO SPA</span></span>
               </div>
@@ -141,19 +168,19 @@ function App() {
             <div className="footer-links">
               <h4>Quick Links</h4>
               <ul>
-                <li><a href="#home">Home</a></li>
-                <li><a href="#services">Wash Packages</a></li>
-                <li><a href="#">Unlimited Club</a></li>
-                <li><a href="#">Fleet Accounts</a></li>
+                <li><button className="nav-btn" onClick={() => scrollToSection('home')}>Home</button></li>
+                <li><button className="nav-btn" onClick={() => scrollToSection('services')}>Wash Packages</button></li>
+                <li><button className="nav-btn">Unlimited Club</button></li>
+                <li><button className="nav-btn">Fleet Accounts</button></li>
               </ul>
             </div>
             <div className="footer-links">
               <h4>Company</h4>
               <ul>
-                <li><a href="#location">Location</a></li>
-                <li><a href="#">About Us</a></li>
-                <li><a href="#">Careers</a></li>
-                <li><a href="#">Contact</a></li>
+                <li><button className="nav-btn" onClick={() => scrollToSection('location')}>Location</button></li>
+                <li><button className="nav-btn">About Us</button></li>
+                <li><button className="nav-btn">Careers</button></li>
+                <li><button className="nav-btn">Contact</button></li>
               </ul>
             </div>
           </div>
